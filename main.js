@@ -103,12 +103,12 @@ var hero=document.querySelector('.hero-in');
 if(hero){
 let tx=0,ty=0,cx=0,cy=0;
 window.addEventListener('pointermove',e=>{
-tx=((e.clientX/window.innerWidth)-.5)*4;
-ty=((e.clientY/window.innerHeight)-.5)*-3;
+tx=((e.clientX/window.innerWidth)-.5)*7;
+ty=((e.clientY/window.innerHeight)-.5)*-5;
 });
 (function loop(){
 cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
-hero.style.transform=`perspective(1200px) rotateY(${cx}deg) rotateX(${cy}deg)`;
+hero.style.transform=`perspective(1400px) rotateY(${cx}deg) rotateX(${cy}deg) translateZ(25px)`;
 requestAnimationFrame(loop);
 })();
 }
