@@ -3,7 +3,7 @@
   window.__rev = true;
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ---- mobile nav ---- */
+  /* mobile nav */
   var toggle = document.querySelector('.nav-toggle');
   var links  = document.querySelector('.nav-links');
   if(toggle && links){
@@ -19,7 +19,7 @@
     });
   }
 
-  /* ---- publications tabs ---- */
+  /* publications tabs */
   var tabs = document.querySelectorAll('.tab');
   if(tabs.length){
     tabs.forEach(function(tab){
@@ -37,17 +37,7 @@
     });
   }
 
-  /* ---- inline "see more" ---- */
-  document.querySelectorAll('.see-more').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var entry = btn.closest('.entry');
-      if(!entry) return;
-      var open = entry.classList.toggle('open');
-      btn.querySelector('.label').textContent = open ? 'See less' : 'See more';
-    });
-  });
-
-  /* ---- scroll reveal ---- */
+  /* scroll reveal */
   var reveals = document.querySelectorAll('.reveal');
   if(reduce){
     reveals.forEach(function(el){ el.classList.add('in'); });
@@ -62,7 +52,7 @@
     reveals.forEach(function(el){ el.classList.add('in'); });
   }
 
-  /* ---- water-light parallax (desktop, fine pointer) ---- */
+  /* water-light parallax */
   var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var tide = document.querySelector('.tide');
   if(tide && canHover && !reduce){
@@ -77,5 +67,29 @@
       tide.style.setProperty('--py', cy.toFixed(2)+'px');
       requestAnimationFrame(loop);
     })();
+  }
+
+  /* Substack writing */
+  var feed = document.getElementById('substack-posts');
+  if(feed){
+    var SUBSTACK = 'https://saumyaaanchal.substack.com';
+    fetch('data/posts.json').then(function(r){
+      if(!r.ok) throw new Error('load');
+      return r.json();
+    }).then(function(posts){
+      if(!posts || !posts.length){ throw new Error('empty'); }
+      feed.innerHTML = posts.map(function(post){
+        var d = new Date(post.published);
+        var date = isNaN(d) ? '' : d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' });
+        var excerpt = (post.summary || '').replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim().slice(0,220);
+        return '<a class="post" href="'+post.link+'" target="_blank" rel="noopener">'
+             + (date ? '<span class="date">'+date+'</span>' : '')
+             + '<h3>'+post.title+'</h3>'
+             + (excerpt ? '<p>'+excerpt+'…</p>' : '')
+             + '</a>';
+      }).join('');
+    }).catch(function(){
+      feed.innerHTML = '<p class="blog-empty">Read the latest writing on <a href="'+SUBSTACK+'" target="_blank" rel="noopener">Substack →</a></p>';
+    });
   }
 })();
