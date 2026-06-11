@@ -1,12 +1,12 @@
-import feedparser
+import requests
 
-RSS_URL = "https://saumyaaanchal.substack.com/feed"
+url = "https://saumyaaanchal.substack.com/feed"
 
-feed = feedparser.parse(RSS_URL)
+response = requests.get(
+    url,
+    headers={"User-Agent": "Mozilla/5.0"},
+    timeout=30
+)
 
-print("Feed title:", feed.feed.get("title"))
-print("Entries:", len(feed.entries))
-print("Bozo:", feed.bozo)
-
-if feed.bozo:
-    print("Error:", feed.bozo_exception)
+print("Status:", response.status_code)
+print(response.text[:3000])
