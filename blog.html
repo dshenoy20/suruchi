@@ -40,25 +40,11 @@
 
     <!-- Latest posts: these are placeholders. To auto-update, pull your Substack RSS
          (https://YOURNAME.substack.com/feed) through a feed service and render the items here. -->
-    <div class="blog-list">
-        <a class="post reveal" href="#" target="_blank" rel="noopener">
-            <span class="date">Latest</span>
-            <h3>Your most recent Substack post will appear here</h3>
-            <p>Connect your Substack feed to list titles, dates, and previews automatically.</p>
-        </a>
-        <a class="post reveal d1" href="#" target="_blank" rel="noopener">
-            <span class="date">Earlier</span>
-            <h3>A second post placeholder</h3>
-            <p>Each entry links straight through to the full piece on Substack.</p>
-        </a>
-        <a class="post reveal d2" href="#" target="_blank" rel="noopener">
-            <span class="date">Earlier</span>
-            <h3>A third post placeholder</h3>
-            <p>Swap these three cards for live entries when the feed is wired in.</p>
-        </a>
+    <div id="substack-posts" class="blog-list">
+        <p>Loading writing...</p>
     </div>
 
-    <p class="note reveal">More writing is added as it is published.</p>
+    
 </main>
 
 <footer class="foot">
@@ -74,5 +60,57 @@
 </footer>
 
 <script src="main.js" defer></script>
+
+<script>
+async function loadPosts() {
+    const container = document.getElementById("substack-posts");
+    if (!container) return;
+
+    try {
+        const response = await fetch("data/posts.json");
+        if (!response.ok) throw new Error("Unable to load posts");
+
+        const posts = await response.json();
+
+        if (!posts.length) {
+            container.innerHTML = "<p>No writing available yet.</p>";
+            return;
+        }
+
+        container.innerHTML = posts.map(post => {
+            const date = new Date(post.published).toLocaleDateString("en-GB", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            });
+
+            const excerpt = (post.summary || "")
+                .replace(/<[^>]*>/g, "")
+                .replace(/\s+/g, " ")
+                .trim()
+                .slice(0, 240);
+
+            return `
+                <a class="post" href="${post.link}" target="_blank" rel="noopener">
+                    <span class="date">${date}</span>
+                    <h3>${post.title}</h3>
+                    <p>${excerpt}...</p>
+                </a>
+            `;
+        }).join("");
+    } catch (error) {
+        container.innerHTML = `
+            <p>
+                Unable to load writing.
+                <a href="https://saumyaaanchal.substack.com" target="_blank" rel="noopener">
+                    Visit Substack →
+                </a>
+            </p>
+        `;
+    }
+}
+loadPosts();
+</script>
+
 </body>
 </html>
