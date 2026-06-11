@@ -179,6 +179,34 @@ a{ color:var(--sea); text-decoration:none; }
 }
 .social a:hover{ background:var(--sea); color:#fff; border-color:var(--sea); transform:translateY(-4px); box-shadow:var(--shadow); }
 .social svg{ width:21px; height:21px; }
+.contact-home .riverline{ margin-top:0; }
+.cv-download{
+    display:inline-flex; align-items:center; gap:9px;
+    font-family:"Inter",sans-serif; font-size:.78rem; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--sea); background:var(--surface); border:1px solid var(--line-strong);
+    padding:11px 22px; border-radius:999px; box-shadow:var(--shadow-sm);
+    transition:background .4s var(--ease), color .4s var(--ease), border-color .4s var(--ease), transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+.cv-download:hover{ background:var(--sea); color:#fff; border-color:var(--sea); transform:translateY(-3px); box-shadow:var(--shadow); }
+.cv-download svg{ width:15px; height:15px; }
+
+/* ---- Home cinematic intro: chrome hidden until first interaction ---- */
+html.home-intro .nav{
+    opacity:0; transform:translateY(-14px); filter:blur(6px); pointer-events:none;
+    transition:opacity 1s var(--ease), transform 1s var(--ease), filter 1s var(--ease);
+}
+html.home-intro.revealed .nav{ opacity:1; transform:none; filter:none; pointer-events:auto; transition-delay:.08s; }
+
+html.home-intro .contact-home > *{
+    opacity:0; transform:translateY(12px); filter:blur(5px);
+    transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease);
+    pointer-events:none;
+}
+html.home-intro.revealed .contact-home > *{ opacity:1; transform:none; filter:none; pointer-events:auto; }
+html.home-intro.revealed .contact-home > *:nth-child(1){ transition-delay:.30s; }
+html.home-intro.revealed .contact-home > *:nth-child(2){ transition-delay:.44s; }
+html.home-intro.revealed .contact-home > *:nth-child(3){ transition-delay:.56s; }
+html.home-intro.revealed .contact-home > *:nth-child(4){ transition-delay:.68s; }
 
 /* =========================================================
    ABOUT

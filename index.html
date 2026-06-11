@@ -7,7 +7,22 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script>document.documentElement.classList.add("js");addEventListener("load",function(){setTimeout(function(){if(!window.__rev){document.querySelectorAll(".reveal").forEach(function(e){e.classList.add("in");});}},1600);});</script>
+<script>
+(function(){
+  var d=document.documentElement;
+  d.classList.add("js");
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(!reduce){
+    d.classList.add("home-intro");
+    var done=false, evs=["wheel","touchstart","scroll","pointerdown","keydown"];
+    function reveal(){ if(done) return; done=true; d.classList.add("revealed");
+      evs.forEach(function(ev){ window.removeEventListener(ev, reveal); }); }
+    evs.forEach(function(ev){ window.addEventListener(ev, reveal, {passive:true}); });
+    setTimeout(reveal, 6000); /* safety: never stay hidden */
+  }
+  addEventListener("load",function(){ setTimeout(function(){ if(!window.__rev){ document.querySelectorAll(".reveal").forEach(function(e){e.classList.add("in");}); } },1600); });
+})();
+</script>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -23,7 +38,6 @@
         <a href="publications.html">Publications</a>
         <a href="blog.html">Blog</a>
         <a href="art.html">Art</a>
-        <a href="Saumya-Aanchal-CV.pdf" class="nav-cta" download>Download CV</a>
     </nav>
 </header>
 
@@ -34,6 +48,10 @@
         <p class="tagline reveal in d2">Exploring memory, literature, culture, and the heritage of eastern India.</p>
         <div class="contact-home reveal in d3">
             <svg class="riverline center" viewBox="0 0 360 16" preserveAspectRatio="none" aria-hidden="true"><path d="M0,8 C40,2 64,14 104,8 S168,2 208,8 S300,14 360,8" fill="none" stroke="currentColor" stroke-width="1.4" vector-effect="non-scaling-stroke"/></svg>
+            <a class="cv-download" href="Saumya-Aanchal-CV.pdf" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>
+                Download CV
+            </a>
             <p class="c-label">Get in Touch</p>
             <div class="social">
                 <a href="https://www.linkedin.com/in/saumya-aanchal-7b79551a4/" target="_blank" rel="noopener" aria-label="LinkedIn">
