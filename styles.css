@@ -508,12 +508,19 @@ background-clip:text;
 color:transparent;
 -webkit-text-fill-color:transparent;
 animation:heroShimmer 10s ease infinite;
+   transition:
+    letter-spacing .8s cubic-bezier(.22,.8,.18,1),
+    filter .8s cubic-bezier(.22,.8,.18,1);
 }
 
 @keyframes heroShimmer{
 0%{background-position:10% 0;}
 50%{background-position:90% 0;}
 100%{background-position:10% 0;}
+}
+.hero h1:hover{
+    letter-spacing:.05em;
+    filter:drop-shadow(0 0 18px rgba(226,196,137,.22));
 }
 
 .tagline{max-width:24ch;}
