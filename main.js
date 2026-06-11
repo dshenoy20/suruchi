@@ -93,3 +93,52 @@
     });
   }
 })();
+
+
+/* editorial depth */
+(function(){
+var canHover=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+if(!canHover) return;
+var hero=document.querySelector('.hero-in');
+if(hero){
+let tx=0,ty=0,cx=0,cy=0;
+window.addEventListener('pointermove',e=>{
+tx=((e.clientX/window.innerWidth)-.5)*4;
+ty=((e.clientY/window.innerHeight)-.5)*-3;
+});
+(function loop(){
+cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
+hero.style.transform=`perspective(1200px) rotateY(${cx}deg) rotateX(${cy}deg)`;
+requestAnimationFrame(loop);
+})();
+}
+document.querySelectorAll('a').forEach(a=>{
+a.addEventListener('click',()=>document.body.style.opacity='.92');
+});
+})();
+
+
+/* subtle editorial motion */
+(function(){
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+document.querySelectorAll('.art-frame img, .portrait-img').forEach(function(el){
+el.addEventListener('mousemove',function(e){
+var r=el.getBoundingClientRect();
+var x=(e.clientX-r.left)/r.width-0.5;
+var y=(e.clientY-r.top)/r.height-0.5;
+el.style.transform='scale(1.02) translate('+(-x*6)+'px,'+(-y*6)+'px)';
+});
+el.addEventListener('mouseleave',function(){
+el.style.transform='';
+});
+});
+})();
+
+document.addEventListener('DOMContentLoaded',()=>{
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.12});
+document.querySelectorAll('section,article,figure,.card,.publication-card,.art-card,.post-card').forEach(el=>{el.classList.add('reveal-luxury');obs.observe(el);});
+document.addEventListener('mousemove',e=>{
+document.documentElement.style.setProperty('--px',(e.clientX/window.innerWidth-.5)*18+'px');
+document.documentElement.style.setProperty('--py',(e.clientY/window.innerHeight-.5)*18+'px');
+});
+});
