@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Saumya Aanchal">
+  <rect width="64" height="64" rx="14" fill="#14110f"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" fill="none" stroke="#c8a86a" stroke-opacity="0.45" stroke-width="1.5"/>
+  <text x="32" y="33" text-anchor="middle" dominant-baseline="central"
+        font-family="Georgia, 'Times New Roman', serif" font-size="34" font-weight="500"
+        letter-spacing="-1" fill="#e6cd96">SA</text>
+</svg>
