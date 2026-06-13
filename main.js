@@ -52,19 +52,25 @@
     reveals.forEach(function(el){ el.classList.add('in'); });
   }
 
-  /* water-light parallax */
-  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  /* ── ambient water-light parallax ──────────────────────────
+     Smooth, very gentle: the tide layer follows the pointer at
+     a much lower amplitude than before, with heavy easing so it
+     never feels jerky or responsive. */
   var tide = document.querySelector('.tide');
+  var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   if(tide && canHover && !reduce){
-    var tx=0,ty=0,cx=0,cy=0;
+    var tx=0, ty=0, cx=0, cy=0;
     window.addEventListener('pointermove', function(e){
-      tx = ((e.clientX/window.innerWidth)-0.5)*30;
-      ty = ((e.clientY/window.innerHeight)-0.5)*30;
+      /* ±12px max travel — subtle, not distracting */
+      tx = ((e.clientX / window.innerWidth)  - 0.5) * 24;
+      ty = ((e.clientY / window.innerHeight) - 0.5) * 16;
     }, {passive:true});
     (function loop(){
-      cx += (tx-cx)*0.05; cy += (ty-cy)*0.05;
-      tide.style.setProperty('--px', cx.toFixed(2)+'px');
-      tide.style.setProperty('--py', cy.toFixed(2)+'px');
+      /* very slow lerp: 0.028 means it takes ~35 frames to reach target */
+      cx += (tx - cx) * 0.028;
+      cy += (ty - cy) * 0.028;
+      tide.style.setProperty('--px', cx.toFixed(2) + 'px');
+      tide.style.setProperty('--py', cy.toFixed(2) + 'px');
       requestAnimationFrame(loop);
     })();
   }
@@ -92,4 +98,28 @@
       feed.innerHTML = '<p class="blog-empty">Read the latest writing on <a href="'+SUBSTACK+'" target="_blank" rel="noopener">Substack →</a></p>';
     });
   }
+
+  /* ── Hero: gentle depth on pointer move ────────────────────
+     Very small travel values keep it feeling like paper depth,
+     not a parallax gimmick. Only active on desktop with pointer. */
+  var hero = document.querySelector('.hero-in');
+  if(hero && canHover && !reduce){
+    var hx=0, hy=0, hcx=0, hcy=0;
+    window.addEventListener('pointermove', function(e){
+      hx = ((e.clientX / window.innerWidth)  - 0.5);
+      hy = ((e.clientY / window.innerHeight) - 0.5);
+    }, {passive:true});
+    var h1 = hero.querySelector('h1');
+    var roles = hero.querySelector('.roles');
+    var tagline = hero.querySelector('.tagline');
+    (function heroLoop(){
+      hcx += (hx - hcx) * 0.04;
+      hcy += (hy - hcy) * 0.04;
+      if(h1)      h1.style.transform      = 'translate('+( hcx*5).toFixed(2)+'px,'+(hcy*4).toFixed(2)+'px)';
+      if(roles)   roles.style.transform   = 'translate('+( hcx*8).toFixed(2)+'px,'+(hcy*6).toFixed(2)+'px)';
+      if(tagline) tagline.style.transform = 'translate('+(hcx*11).toFixed(2)+'px,'+(hcy*8).toFixed(2)+'px)';
+      requestAnimationFrame(heroLoop);
+    })();
+  }
+
 })();
