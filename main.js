@@ -52,14 +52,14 @@
     reveals.forEach(function(el){ el.classList.add('in'); });
   }
 
-  /* water-light parallax — slow, ambient, pointer-led */
+  /* water-light parallax */
   var canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
   var tide = document.querySelector('.tide');
   if(tide && canHover && !reduce){
     var tx=0,ty=0,cx=0,cy=0;
     window.addEventListener('pointermove', function(e){
-      tx = ((e.clientX/window.innerWidth)-0.5)*26;
-      ty = ((e.clientY/window.innerHeight)-0.5)*26;
+      tx = ((e.clientX/window.innerWidth)-0.5)*30;
+      ty = ((e.clientY/window.innerHeight)-0.5)*30;
     }, {passive:true});
     (function loop(){
       cx += (tx-cx)*0.05; cy += (ty-cy)*0.05;
